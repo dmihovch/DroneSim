@@ -1,6 +1,7 @@
 # Prerequisites
 *.d
 
+sim-environment/build/
 # Compiled Object files
 *.slo
 *.lo
