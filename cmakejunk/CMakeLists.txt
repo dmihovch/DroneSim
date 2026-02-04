@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(sim-enviro LANGUAGES CXX)
+project(drone-sim LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -11,12 +11,12 @@ file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
     src/*.cpp
 )
 
-add_executable(sim-enviro ${SRC_FILES})
+add_executable(drone-sim ${SRC_FILES})
 
-target_include_directories(sim-enviro PRIVATE
+target_include_directories(drone-sim PRIVATE
     ${RAYLIB_INCLUDE_DIRS}
 )
 
-target_link_libraries(sim-enviro PRIVATE
+target_link_libraries(drone-sim PRIVATE
     ${RAYLIB_LIBRARIES}
 )

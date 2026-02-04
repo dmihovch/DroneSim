@@ -1,3 +1,0 @@
-/home/dan/projects/dronesim/sim-environment/build/CMakeFiles/sim-enviro.dir
-/home/dan/projects/dronesim/sim-environment/build/CMakeFiles/edit_cache.dir
-/home/dan/projects/dronesim/sim-environment/build/CMakeFiles/rebuild_cache.dir

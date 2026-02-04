@@ -1,60 +1,13 @@
-#include <raylib.h>
+#include "raylib.h"
+#include "../include/drone.hpp"
 
 #define WIDTH 1280
 #define HEIGHT 960
 
 #define FRAMERATE 60
-#define DT 1/FRAMERATE
+#define DT 1./FRAMERATE
 
-class Drone
-{
-	public:
-		Drone();
-		~Drone() = default;
-		void apply_accel();
-		void move();
-		Vector3 get_pos();
-	private:
-		Vector3 pos;
-		Vector3 vel;
-		Vector3 acc;
-		float mass;
-};
 
-void Drone::apply_accel()
-{
-	acc = (Vector3){0,-9.8,0};
-}
-
-void Drone::move()
-{
-	//this isn't correct atm
-	vel.x+=acc.x * DT;
-	vel.y+=acc.y * DT;
-	vel.z+=acc.z * DT;
-
-	pos.x+=vel.x * DT;
-	pos.y+=vel.y * DT;
-	pos.z+=vel.z * DT;
-
-	if(pos.y <= 0)
-	{
-		pos.y = 100;
-		vel = {0};
-	}
-}
-
-Drone::Drone()
-{
-	pos = (Vector3){0,100,0};
-	vel = (Vector3){0,0,0};
-	acc = (Vector3){0,0,0};
-}
-
-Vector3 Drone::get_pos()
-{
-	return pos;
-}
 
 int main()
 {
@@ -84,6 +37,11 @@ int main()
 	while(!WindowShouldClose() && !IsKeyPressed(KEY_Q))
 	{
 
+		if(IsKeyPressed(KEY_W))
+		{
+			d.impulse();
+		}
+
 		UpdateCamera(&camera, CAMERA_THIRD_PERSON);
 
 		BeginDrawing();
@@ -94,7 +52,7 @@ int main()
 		DrawSphere(d.get_pos(), 2,RED);
 
 		d.apply_accel();
-		d.move();
+		d.move(DT);
 		camera.target = d.get_pos();
 		DrawGrid(10,10.f);
 
