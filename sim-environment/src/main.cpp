@@ -10,9 +10,10 @@ class Drone
 {
 	public:
 		Drone();
-		~Drone();
+		~Drone() = default;
 		void apply_accel();
 		void move();
+		Vector3 get_pos();
 	private:
 		Vector3 pos;
 		Vector3 vel;
@@ -35,13 +36,24 @@ void Drone::move()
 	pos.x+=vel.x * DT;
 	pos.y+=vel.y * DT;
 	pos.z+=vel.z * DT;
+
+	if(pos.y <= 0)
+	{
+		pos.y = 100;
+		vel = {0};
+	}
 }
 
 Drone::Drone()
 {
-	pos = (Vector3){0,10,0};
+	pos = (Vector3){0,100,0};
 	vel = (Vector3){0,0,0};
 	acc = (Vector3){0,0,0};
+}
+
+Vector3 Drone::get_pos()
+{
+	return pos;
 }
 
 int main()
@@ -52,14 +64,15 @@ int main()
 		return 1;
 	}
 
+	Drone d = Drone();
+
 	Camera3D camera = {0};
 	camera.position = (Vector3){0.0f,10.0f,-20.0f};
-	camera.target = (Vector3){0,10,0};
+	camera.target = d.get_pos();
 	camera.up = (Vector3){0.0f,1.0f,0.0f};
 	camera.fovy = 90.0f;
 	camera.projection = CAMERA_PERSPECTIVE;
 
-	Drone d = Drone();
 
 	SetTargetFPS(FRAMERATE);
 
@@ -78,10 +91,13 @@ int main()
 		BeginMode3D(camera);
 
 		DrawPlane((Vector3){0,0,0},(Vector2){100,100},GREEN);
-		DrawSphere(camera.target, 2,RED);
+		DrawSphere(d.get_pos(), 2,RED);
 
-
+		d.apply_accel();
+		d.move();
+		camera.target = d.get_pos();
 		DrawGrid(10,10.f);
+
 
 		EndMode3D();
 		DrawFPS(0,0);
